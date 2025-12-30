@@ -143,7 +143,7 @@ void Client::handleEvents()
             m_isRunning = false;
             break;
         case sf::Event::KeyReleased:
-            if (event.key.code  == sf::Keyboard::V && event.key.control)
+            if (event.key.code  == sf::Keyboard::V && (event.key.control || event.key.system))
                 m_eventManager.getDispatcher().send<events::TextPastedEvent>(sf::Clipboard::getString());
             else
                 m_eventManager.getDispatcher().send<events::KeyReleasedEvent>(event.key);
