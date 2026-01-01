@@ -3,6 +3,11 @@
 #include "shared/game/object/Object.hpp"
 #include "shared/player/Types.hpp"
 
+namespace cn::shared::game::controller
+{
+class PrivateZoneViewable;
+}
+
 namespace cn::shared::game::object
 {
 
@@ -14,6 +19,10 @@ public:
     PlayerId getOwnerId() const { return m_ownerId; }
 
 private:
+    friend class controller::PrivateZoneViewable;
+    virtual void onEntered() {}
+    virtual void onExited() {}
+
     PlayerId m_ownerId{};
 };
 

@@ -18,8 +18,13 @@ private:
     void onActivate() override;
     void onDraw(sf::RenderWindow& _window) override;
 
+    void onEntered() override;
+    void onExited() override;
+
     sf::Sprite m_sprite;
     sf::Text m_name;
+
+    unsigned m_enteredCount = 0;
 };
 
 } // namespace cn::client::game

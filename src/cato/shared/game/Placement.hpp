@@ -15,6 +15,7 @@ namespace cn::shared::game::placement
 
     Placement getDeck();
     Placement getDiscard();
+    Placement getTable();
     std::vector<Placement> getParticipant(unsigned _participantNumber);
 
     Placement getButton(TableButtonType _type);

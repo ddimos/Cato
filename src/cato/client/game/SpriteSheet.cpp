@@ -3,11 +3,14 @@
 namespace
 {
 
-constexpr short unsigned CardWidth = 70;
-constexpr short unsigned CardHeight = 100;
+constexpr short unsigned CardWidth = 2*70;
+constexpr short unsigned CardHeight = 2*100;
 
 constexpr short unsigned TableButtonWidth = 50;
 constexpr short unsigned TableButtonHeight = 30;
+
+constexpr short unsigned PrivateZoneHeight = 50;
+constexpr short unsigned PrivateZoneWidth = 200;
 
 } // namespace
 
@@ -60,6 +63,13 @@ sf::IntRect getFromDisacrdButton(Hover _hover)
     return _hover == Hover::No 
         ? sf::IntRect{ 2 * TableButtonWidth,                 0, TableButtonWidth, TableButtonHeight }
         : sf::IntRect{ 2 * TableButtonWidth, TableButtonHeight, TableButtonWidth, TableButtonHeight };
+}
+
+sf::IntRect getPrivateZone(Hover _hover)
+{
+    return _hover == Hover::No 
+        ? sf::IntRect{ 0,                 0, PrivateZoneWidth, PrivateZoneHeight }
+        : sf::IntRect{ 0, PrivateZoneHeight, PrivateZoneWidth, PrivateZoneHeight };
 }
 
 } // namespace cn::client::game::spriteSheet

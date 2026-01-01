@@ -1,6 +1,9 @@
 #include "client/game/PrivateZone.hpp"
+#include "client/game/SpriteSheet.hpp"
 
 #include "client/ResourceIds.hpp"
+
+#include "core/Assert.hpp"
 
 namespace cn::client::game
 {
@@ -9,6 +12,7 @@ PrivateZone::PrivateZone(const core::Context& _context, shared::game::object::Id
     : shared::game::object::PrivateZone(_id, _ownerId)
 {
     m_sprite.setTexture(_context.get<TextureHolder>().get(TextureIds::PrivateZone));
+    m_sprite.setTextureRect(spriteSheet::getPrivateZone());
     m_sprite.setOrigin(m_sprite.getLocalBounds().getSize() / 2.f);
 
     m_name.setFont(_context.get<FontHolder>().get(FontIds::Main));
@@ -31,6 +35,22 @@ void PrivateZone::onDraw(sf::RenderWindow& _window)
 {
     _window.draw(m_sprite);
     _window.draw(m_name);
+}
+
+void PrivateZone::onEntered()
+{
+    if (m_enteredCount == 0)
+        m_sprite.setTextureRect(spriteSheet::getPrivateZone(spriteSheet::Hover::Yes));
+    m_enteredCount++;
+}
+
+void PrivateZone::onExited()
+{
+    CN_ASSERT(m_enteredCount > 0);
+
+    m_enteredCount--;
+    if (m_enteredCount == 0)
+        m_sprite.setTextureRect(spriteSheet::getPrivateZone());
 }
 
 } // namespace cn::client::game

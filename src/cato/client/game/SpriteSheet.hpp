@@ -22,4 +22,6 @@ sf::IntRect getShuffleButton(Hover _hover = Hover::No);
 sf::IntRect getResetButton(Hover _hover = Hover::No);
 sf::IntRect getFromDisacrdButton(Hover _hover = Hover::No);
 
+sf::IntRect getPrivateZone(Hover _hover = Hover::No);
+
 } // namespace cn::client::game::spriteSheet

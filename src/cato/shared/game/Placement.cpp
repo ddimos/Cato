@@ -3,7 +3,7 @@
 
 namespace
 {
-    constexpr float EDGE_OFFSET = 65.f;
+    constexpr float EDGE_OFFSET = 30.f;
     constexpr float OFFSET_1 = 150.f;
     constexpr float POS_X_1 = 960.f - 540.f + EDGE_OFFSET;
     constexpr float POS_X_2 = 960.f - OFFSET_1;
@@ -28,6 +28,11 @@ Placement getDeck()
 Placement getDiscard()
 {
     return { sf::Vector2f(1110.f, 540.f), 0.f };
+}
+
+Placement getTable()
+{
+    return { sf::Vector2f(960.f, 540.f), 0.f };
 }
 
 std::vector<Placement> getParticipant(unsigned _participantNumber)

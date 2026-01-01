@@ -28,14 +28,7 @@ Board::Board(
     , m_privateZoneViewableController(
         [this](shared::game::component::PrivateZoneViewable& _component){
             auto& card = static_cast<shared::game::object::Card&>(_component.getParent());
-            if (_component.isHidden())
-            {
-                m_flipController.turnUp(card.getFlippableComponent());
-                card.flip(true);
-
-                m_provideCardValueCallback(card);
-            }
-            else
+            if (!_component.isHidden())
             {
                 m_flipController.turnDown(card.getFlippableComponent());
                 card.flip(false);
@@ -82,7 +75,7 @@ Board::Board(
         auto* zone = m_privateZones.emplace_back(_createPrivateZoneFunc(generateNextOjectId(), player.id));
         zone->setPosition(points.at(i).pos);
         zone->setRotation(points.at(i).rot);
-        zone->setSize(sf::Vector2f(100.f, 110.f));
+        zone->setSize(sf::Vector2f(200.f, 50.f + 20.f)); // The private zone bounderies are slightly bigger
         m_privateZoneViewableController.addPrivateZone(*zone);
 
         ++i;
@@ -150,6 +143,18 @@ void Board::update(sf::Time _dt)
 {
     m_clickCountableController.update(_dt);
     m_privateZoneViewableController.update();
+
+    if (m_cardToCheckAfterReleased)
+    {
+        if (m_cardToCheckAfterReleased->getPrivateZoneViewableComponent().isHidden())
+        {
+            m_flipController.turnUp(m_cardToCheckAfterReleased->getFlippableComponent());
+            m_cardToCheckAfterReleased->flip(true);
+
+            m_provideCardValueCallback(*m_cardToCheckAfterReleased);
+        }
+        m_cardToCheckAfterReleased = nullptr;
+    }
 }
 
 component::Grabbable* Board::findObjectToGrab(PlayerId _playerId, sf::Vector2f _position)
@@ -192,7 +197,7 @@ void Board::participantReleases(PlayerId _playerId, object::Id _id, sf::Vector2f
         pos = m_discard->getPosition();
         m_flipController.turnUp(card->getFlippableComponent());
         card->flip(true);
-        card->rotate(0);
+        card->rotate(m_discard->getRotation());
 
         m_provideCardValueCallback(*card);
     }
@@ -202,9 +207,14 @@ void Board::participantReleases(PlayerId _playerId, object::Id _id, sf::Vector2f
         pos = m_deck->getPosition();
         m_flipController.turnDown(card->getFlippableComponent());
         card->flip(false);
-        card->rotate(0);
+        card->rotate(m_deck->getRotation());
     }
     card->move(pos);
+
+    // TODO This is a hack
+    // there might be a desync between peers because not all peers have updated position at this point
+    // so the controller will have outdated info, so we need to wait for it to run the update
+    m_cardToCheckAfterReleased = card;
 }
 
 object::Object* Board::participantClicks(PlayerId _playerId, sf::Vector2f _position)
@@ -250,6 +260,7 @@ void Board::performClick(object::Object& _object)
         for (auto* card : m_cards)
         {
             card->move(m_deck->getPosition());
+            card->rotate(m_deck->getRotation());
             m_flipController.turnDown(card->getFlippableComponent());
             card->flip(false);
         }
@@ -261,6 +272,7 @@ void Board::performClick(object::Object& _object)
             [this](object::Card& _card){
                 m_deck->add(_card);
                 _card.move(m_deck->getPosition());
+                _card.rotate(m_deck->getRotation());
                 m_flipController.turnDown(_card.getFlippableComponent());
                 _card.flip(false);
             }

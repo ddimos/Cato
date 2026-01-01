@@ -76,6 +76,8 @@ private:
     controller::PrivateZoneViewable m_privateZoneViewableController;
 
     std::function<void(object::Card&)> m_provideCardValueCallback{};
+
+    object::Card* m_cardToCheckAfterReleased = nullptr;
 };
 
 } // namespace cn::shared::game

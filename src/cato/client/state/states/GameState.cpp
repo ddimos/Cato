@@ -12,11 +12,14 @@
 #include "client/game/PrivateZone.hpp"
 #include "client/game/SpriteSheet.hpp"
 
+#include "client/ResourceIds.hpp"
+
 #include "core/event/Dispatcher.hpp"
 
 #include "shared/events/GameEvents.hpp"
 #include "shared/events/NetworkEvents.hpp"
 #include "shared/Types.hpp"
+#include "shared/game/Placement.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
@@ -96,6 +99,13 @@ GameState::GameState(core::state::Manager& _stateManagerRef)
         },
         [](shared::game::object::Card&){}
     );
+
+    {
+        m_tableSprite.setTexture(getContext().get<TextureHolder>().get(TextureIds::Table));
+        m_tableSprite.setOrigin(m_tableSprite.getLocalBounds().getSize() / 2.f);
+        m_tableSprite.setPosition(shared::game::placement::getTable().pos);
+    }
+
 
     m_listenerId = core::event::getNewListenerId();
 
@@ -183,6 +193,12 @@ core::state::Return GameState::onUpdate(sf::Time _dt)
 {
     m_board->update(_dt);
     return core::state::Return::Break;
+}
+
+void GameState::onDraw()
+{
+    auto& window = getContext().get<sf::RenderWindow>();
+    window.draw(m_tableSprite);
 }
 
 } // namespace cn::client::states

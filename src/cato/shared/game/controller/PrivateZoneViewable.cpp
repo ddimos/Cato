@@ -25,6 +25,7 @@ void PrivateZoneViewable::update()
                 if (!component->isHidden())
                 {
                     component->hide(*zone);
+                    zone->onEntered();
                     m_onZoneChanged(*component);
                 }
             }
@@ -33,6 +34,7 @@ void PrivateZoneViewable::update()
                 if (component->isHiddenInZone(*zone))
                 {
                     component->show(*zone);
+                    zone->onExited();
                     m_onZoneChanged(*component);
                 }
             }
