@@ -60,6 +60,8 @@ void Deck::shuffle()
         arr[i] = m_cards[i]->getId().value();
     CN_LOG_I_FRM("Cards {},{},{},{},{}", arr[0], arr[1], arr[2], arr[3], arr[4]);
 #endif
+
+    onShuffle();
 }
 
 Card* Deck::getNextCard()

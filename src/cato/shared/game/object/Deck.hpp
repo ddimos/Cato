@@ -27,6 +27,8 @@ public:
 private:
     void onUpdate(sf::Time) override;
 
+    virtual void onShuffle() {}
+
     std::vector<Card*> m_cards;
     core::Random m_randomizer;
 };
