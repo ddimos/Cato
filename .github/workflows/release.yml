@@ -20,7 +20,7 @@ jobs:
         platform:
         - { name: Windows, os: windows-latest, c_compiler: cl,    cpp_compiler: cl,      archive_type: zip, archive_extension: zip,    target_name: Release/Cato.exe }
        # - { name: Ubuntu,  os: ubuntu-latest,  c_compiler: gcc,   cpp_compiler: g++,     archive_type: tar, archive_extension: tar.gz, target_name: Cato     }
-        - { name: macOS,   os: macos-latest,   c_compiler: clang, cpp_compiler: clang++, archive_type: tar, archive_extension: tar.gz, target_name: Cato.app }
+        - { name: macOS,   os: macos-14,   c_compiler: clang, cpp_compiler: clang++, archive_type: tar, archive_extension: tar.gz, target_name: Cato.app }
         - { name: macOS_intel,   os: macos-15-intel,   c_compiler: clang, cpp_compiler: clang++, archive_type: tar, archive_extension: tar.gz, target_name: Cato.app }
         build_type: [Release]
         lib_type:
