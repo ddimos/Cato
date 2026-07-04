@@ -1,4 +1,5 @@
 
+![Logo](screenshots/logo.png)
 # Cato
 Cato is a 2D online multiplayer card game based on Cabo.
 
@@ -104,4 +105,4 @@ xattr -dr com.apple.quarantine Cato.app
 ```
 
 ## Screenshots
-coming soon...
+![screenshot](screenshots/screenshot.jpg)
